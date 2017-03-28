@@ -63,7 +63,7 @@ def list_controllers():
 def load_controller(name):
     rospy.wait_for_service('controller_manager/load_controller')
     s = rospy.ServiceProxy('controller_manager/load_controller', LoadController)
-    resp = s.call(LoadControllerRequest(name))
+    resp = s.call(LoadControllerRequest(name, ""))
     if resp.ok:
         print "Loaded", name
         return True
@@ -74,7 +74,7 @@ def load_controller(name):
 def unload_controller(name):
     rospy.wait_for_service('controller_manager/unload_controller')
     s = rospy.ServiceProxy('controller_manager/unload_controller', UnloadController)
-    resp = s.call(UnloadControllerRequest(name))
+    resp = s.call(UnloadControllerRequest(name, ""))
     if resp.ok == 1:
         print "Unloaded %s successfully" % name
         return True
@@ -104,7 +104,7 @@ def start_stop_controllers(names, st):
         start = names
     else:
         stop = names
-    resp = s.call(SwitchControllerRequest(start, stop, strictness))
+    resp = s.call(SwitchControllerRequest(start, stop, strictness, ""))
     if resp.ok == 1:
         if st:
             print "Started %s successfully" % names
